@@ -1,32 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
+
 <head>
     <link rel="icon" href="/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新锐博客流量分析</title>
+    <title>葱苓博客流量分析</title>
     <!-- Tailwind CSS for Shadcn/UI style -->
     <script src="assets/tailwindcss.js"></script>
     <script src="assets/echarts.min.js"></script>
     <script src="assets/world.js"></script>
     <style>
-/* 字体引入 */
-@import url('https://cdn.xrbk.cn/fonts/HarmonyOS_Sans_SC/result.css');
-body{font-family:"HarmonyOS Sans SC" !important}
-        
+        /* 字体引入 */
+        @import url('https://cdn.xrbk.cn/fonts/HarmonyOS_Sans_SC/result.css');
+
+        body {
+            font-family: "HarmonyOS Sans SC" !important
+        }
+
         /* Card hover effect - subtle */
         .card-hover {
             transition: all 0.2s ease;
         }
+
         .card-hover:hover {
-            box-shadow: 0 4px 20px -4px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
         }
-        
+
         /* Section title styling */
         .section-title {
             position: relative;
             padding-left: 1rem;
         }
+
         .section-title::before {
             content: '';
             position: absolute;
@@ -50,18 +56,18 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     const headerEl = document.getElementById('page-header');
                     if (headerEl) headerEl.innerText = config.siteName;
                 }
-                if(config.siteIcon) {
+                if (config.siteIcon) {
                     const favicon = document.querySelector('link[rel="icon"]');
-                    if(favicon) favicon.href = config.siteIcon;
+                    if (favicon) favicon.href = config.siteIcon;
                 }
-                if(config.icp) {
+                if (config.icp) {
                     const icpEl = document.getElementById('icp-link');
                     const icpSep = document.getElementById('icp-separator');
-                    if(icpEl) {
+                    if (icpEl) {
                         icpEl.innerText = config.icp;
                         icpEl.classList.remove('hidden');
                     }
-                    if(icpSep) {
+                    if (icpSep) {
                         icpSep.classList.remove('hidden');
                     }
                 }
@@ -143,19 +149,22 @@ body{font-family:"HarmonyOS Sans SC" !important}
         }
     </style>
 </head>
+
 <body class="bg-slate-50 min-h-screen p-8">
     <div class="max-w-7xl mx-auto space-y-6">
-        
+
         <!-- Header -->
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-4 border-b border-slate-200 gap-4">
+        <div
+            class="flex flex-col sm:flex-row items-start sm:items-center justify-between py-4 border-b border-slate-200 gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                 </div>
                 <div>
-                    <h1 id="page-header" class="text-2xl font-bold text-slate-900">新锐博客旗下监控大屏</h1>
+                    <h1 id="page-header" class="text-2xl font-bold text-slate-900">葱苓博客旗下监控大屏</h1>
                     <p class="text-sm text-slate-500">EdgeOne 站点流量与请求量分析</p>
                 </div>
             </div>
@@ -164,24 +173,36 @@ body{font-family:"HarmonyOS Sans SC" !important}
                 <div class="flex flex-col gap-1.5">
                     <label class="text-xs font-medium text-slate-500 uppercase tracking-wider">时间范围</label>
                     <div class="flex gap-2">
-                        <button onclick="setTimeRange('1h')" class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" data-value="1h">1小时</button>
-                        <button onclick="setTimeRange('today')" class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" data-value="today">当天</button>
-                        <button onclick="setTimeRange('yesterday')" class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" data-value="yesterday">昨天</button>
-                        <button onclick="setTimeRange('7d')" class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" data-value="7d">七天</button>
-                        <button onclick="setTimeRange('31d')" class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" data-value="31d">31天</button>
+                        <button onclick="setTimeRange('1h')"
+                            class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                            data-value="1h">1小时</button>
+                        <button onclick="setTimeRange('today')"
+                            class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                            data-value="today">当天</button>
+                        <button onclick="setTimeRange('yesterday')"
+                            class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                            data-value="yesterday">昨天</button>
+                        <button onclick="setTimeRange('7d')"
+                            class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                            data-value="7d">七天</button>
+                        <button onclick="setTimeRange('31d')"
+                            class="time-range-btn h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                            data-value="31d">31天</button>
                     </div>
                     <input type="hidden" id="timeRange" value="1h">
                 </div>
                 <div class="flex flex-col gap-1.5">
                     <label for="zoneId" class="text-xs font-medium text-slate-500 uppercase tracking-wider">选择站点</label>
-                    <select id="zoneId" onchange="onZoneChange()" class="h-9 w-[140px] rounded-lg border border-slate-200 bg-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                         <option value="*">加载中...</option>
+                    <select id="zoneId" onchange="onZoneChange()"
+                        class="h-9 w-[140px] rounded-lg border border-slate-200 bg-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                        <option value="*">加载中...</option>
                     </select>
                 </div>
                 <div class="flex flex-col gap-1.5">
                     <label for="hostId" class="text-xs font-medium text-slate-500 uppercase tracking-wider">选择域名</label>
-                    <select id="hostId" onchange="refreshData()" class="h-9 w-[140px] rounded-lg border border-slate-200 bg-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                         <option value="*">全部域名</option>
+                    <select id="hostId" onchange="refreshData()"
+                        class="h-9 w-[140px] rounded-lg border border-slate-200 bg-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                        <option value="*">全部域名</option>
                     </select>
                 </div>
             </div>
@@ -194,7 +215,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
             <div class="space-y-5">
                 <h2 class="text-lg font-bold text-slate-800 section-title flex items-center gap-2">
                     <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                     流量分析
                 </h2>
@@ -208,8 +230,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                                     <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_flux">加载中...</p>
                                 </div>
                                 <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                                     </svg>
                                 </div>
                             </div>
@@ -225,8 +249,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                                     <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_inFlux">加载中...</p>
                                 </div>
                                 <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                     </svg>
                                 </div>
                             </div>
@@ -242,8 +268,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                                     <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_outFlux">加载中...</p>
                                 </div>
                                 <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 10l7-7m0 0l7 7m-7-7v18" />
                                     </svg>
                                 </div>
                             </div>
@@ -266,7 +294,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
             <div class="space-y-5 pt-6 border-t border-slate-200">
                 <h2 class="text-lg font-bold text-slate-800 section-title flex items-center gap-2">
                     <svg class="h-5 w-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                     带宽分析
                 </h2>
@@ -277,11 +306,14 @@ body{font-family:"HarmonyOS Sans SC" !important}
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-slate-500">总带宽峰值</p>
-                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_bandwidth">加载中...</p>
+                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_bandwidth">加载中...
+                                    </p>
                                 </div>
                                 <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
                                 </div>
                             </div>
@@ -294,11 +326,14 @@ body{font-family:"HarmonyOS Sans SC" !important}
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-slate-500">请求带宽峰值 (In)</p>
-                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_inBandwidth">加载中...</p>
+                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_inBandwidth">加载中...
+                                    </p>
                                 </div>
                                 <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                     </svg>
                                 </div>
                             </div>
@@ -311,11 +346,14 @@ body{font-family:"HarmonyOS Sans SC" !important}
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-slate-500">响应带宽峰值 (Out)</p>
-                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_outBandwidth">加载中...</p>
+                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_outBandwidth">
+                                        加载中...</p>
                                 </div>
                                 <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                                    <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 10l7-7m0 0l7 7m-7-7v18" />
                                     </svg>
                                 </div>
                             </div>
@@ -338,7 +376,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
             <div class="space-y-5 pt-6 border-t border-slate-200">
                 <h2 class="text-lg font-bold text-slate-800 section-title flex items-center gap-2">
                     <svg class="h-5 w-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     请求与性能
                 </h2>
@@ -352,8 +391,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                                     <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_request">加载中...</p>
                                 </div>
                                 <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"/>
+                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
                                     </svg>
                                 </div>
                             </div>
@@ -366,11 +407,14 @@ body{font-family:"HarmonyOS Sans SC" !important}
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-slate-500">平均响应耗时</p>
-                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_avgResponseTime">加载中...</p>
+                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_avgResponseTime">
+                                        加载中...</p>
                                 </div>
                                 <div class="w-12 h-12 bg-cyan-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                 </div>
                             </div>
@@ -383,11 +427,14 @@ body{font-family:"HarmonyOS Sans SC" !important}
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium text-slate-500">平均首字节耗时</p>
-                                    <p class="text-2xl font-bold text-slate-900 mt-1" id="kpi_l7Flow_avgFirstByteResponseTime">加载中...</p>
+                                    <p class="text-2xl font-bold text-slate-900 mt-1"
+                                        id="kpi_l7Flow_avgFirstByteResponseTime">加载中...</p>
                                 </div>
                                 <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
                                 </div>
                             </div>
@@ -421,7 +468,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
             <div class="space-y-5 pt-6 border-t border-slate-200">
                 <h2 class="text-lg font-bold text-slate-800 section-title flex items-center gap-2">
                     <svg class="h-5 w-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                     安全分析 (Security Analysis)
                 </h2>
@@ -444,7 +492,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                         <div class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
                             <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
                         </div>
                         <h3 class="font-semibold text-slate-800">安全防护趋势</h3>
@@ -459,7 +508,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
             <div class="space-y-5 pt-6 border-t border-slate-200">
                 <h2 class="text-lg font-bold text-slate-800 section-title flex items-center gap-2">
                     <svg class="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                     TOP 分析
                 </h2>
@@ -469,7 +519,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                         <div class="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center">
                             <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                         <h3 class="font-semibold text-slate-800">全球请求分布</h3>
@@ -484,8 +535,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="rounded-xl border bg-white shadow-sm card-hover">
                         <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                             <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
                             <h3 class="font-semibold text-slate-800">状态码流量排行</h3>
@@ -499,8 +552,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="rounded-xl border bg-white shadow-sm card-hover">
                         <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                             <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                                 </svg>
                             </div>
                             <h3 class="font-semibold text-slate-800">状态码请求数排行</h3>
@@ -514,8 +569,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="rounded-xl border bg-white shadow-sm card-hover">
                         <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                             <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                                 </svg>
                             </div>
                             <h3 class="font-semibold text-slate-800">域名流量排行</h3>
@@ -529,8 +586,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="rounded-xl border bg-white shadow-sm card-hover">
                         <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                             <div class="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                                <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                                 </svg>
                             </div>
                             <h3 class="font-semibold text-slate-800">域名请求数排行</h3>
@@ -544,8 +603,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="rounded-xl border bg-white shadow-sm card-hover">
                         <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                             <div class="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                 </svg>
                             </div>
                             <h3 class="font-semibold text-slate-800">URL 流量排行</h3>
@@ -559,8 +620,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     <div class="rounded-xl border bg-white shadow-sm card-hover">
                         <div class="p-5 border-b border-slate-100 flex items-center gap-2">
                             <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
-                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                                 </svg>
                             </div>
                             <h3 class="font-semibold text-slate-800">URL 请求数排行</h3>
@@ -575,11 +638,15 @@ body{font-family:"HarmonyOS Sans SC" !important}
         </div>
 
         <!-- Footer -->
-        <div class="flex flex-col justify-center items-center pt-10 pb-6 text-sm text-slate-500 space-y-3 border-t border-slate-200 mt-8">
+        <div
+            class="flex flex-col justify-center items-center pt-10 pb-6 text-sm text-slate-500 space-y-3 border-t border-slate-200 mt-8">
             <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center">
-                <a id="icp-link" href="https://beian.miit.gov.cn/" target="_blank" class="hover:text-blue-600 transition-colors hidden">京ICP备12345678号</a>
+                <a id="icp-link" href="https://beian.miit.gov.cn/" target="_blank"
+                    class="hover:text-blue-600 transition-colors hidden">京ICP备12345678号</a>
                 <span id="icp-separator" class="hidden sm:inline hidden">|</span>
-                <span>本项目基于 <a href="https://github.com/afoim/eo_monitior" target="_blank" class="font-medium text-slate-700 hover:text-blue-600 transition-colors">AcoFork/eo_monitor</a> 二次开发</span>
+                <span>本项目基于 <a href="https://github.com/afoim/eo_monitior" target="_blank"
+                        class="font-medium text-slate-700 hover:text-blue-600 transition-colors">AcoFork/eo_monitor</a>
+                    二次开发</span>
             </div>
         </div>
 
@@ -760,7 +827,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
         function setTimeRange(range, shouldRefresh = true) {
             document.getElementById('timeRange').value = range;
-            
+
             // 更新按钮样式
             document.querySelectorAll('.time-range-btn').forEach(btn => {
                 if (btn.dataset.value === range) {
@@ -771,7 +838,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     btn.classList.add('bg-white', 'border-slate-200', 'hover:bg-slate-50');
                 }
             });
-            
+
             if (shouldRefresh) {
                 refreshData();
             }
@@ -783,9 +850,9 @@ body{font-family:"HarmonyOS Sans SC" !important}
             let endTime = new Date(now);
             let startTime;
 
-            switch(range) {
+            switch (range) {
                 case '1h': startTime = new Date(now.getTime() - 1 * 60 * 60 * 1000); break;
-                case 'today': 
+                case 'today':
                     startTime = new Date(now);
                     startTime.setHours(0, 0, 0, 0);
                     break;
@@ -812,7 +879,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             const start = new Date(startStr);
             const end = new Date(endStr);
             const duration = end.getTime() - start.getTime();
-            const prevEnd = new Date(start.getTime()); 
+            const prevEnd = new Date(start.getTime());
             const prevStart = new Date(prevEnd.getTime() - duration);
             return {
                 prevStartTime: formatDate(prevStart),
@@ -832,19 +899,19 @@ body{font-family:"HarmonyOS Sans SC" !important}
             }
 
             if (prevVal === 0) {
-                growthEl.innerText = ''; 
+                growthEl.innerText = '';
                 return;
             }
 
             const growth = ((currentVal - prevVal) / prevVal) * 100;
             const absGrowth = Math.abs(growth).toFixed(2);
-            
+
             // Color Logic: 
             // All: Increase = Red, Decrease = Green
-            
+
             let colorClass = 'text-gray-500';
             let icon = '';
-            
+
             if (growth > 0) {
                 icon = '↑';
                 colorClass = 'text-red-500';
@@ -873,7 +940,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
                 const zoneId = document.getElementById('zoneId').value.trim();
                 const hostId = document.getElementById('hostId').value.trim();
-                
+
                 let url = `/api/traffic?metric=${metric}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
                 // 粒度始终自动，不添加 interval 参数
                 if (zoneId) {
@@ -897,10 +964,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
             // Check for Top Data Structure (DescribeTopL7AnalysisData)
             // It returns Data[0].DetailData (Array of Key/Value)
             if (result?.Data?.[0]?.DetailData) {
-                 return {
-                     type: 'top',
-                     data: result.Data[0].DetailData
-                 };
+                return {
+                    type: 'top',
+                    data: result.Data[0].DetailData
+                };
             }
 
             // DescribeTimingL7AnalysisData returns 'Data'
@@ -909,7 +976,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             if (dataList.length === 0) return { timeData: [], valueData: [], sum: 0, max: 0, avg: 0, type: 'time' };
 
             let typeValue;
-            
+
             // Try to find matching metric in TypeValue or Value
             if (targetMetric) {
                 if (dataList[0]?.TypeValue) {
@@ -921,11 +988,11 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
             // Fallback if not found or no targetMetric (or if only one exists)
             if (!typeValue) {
-                 typeValue = dataList[0]?.TypeValue?.[0];
-                 // Support DescribeWebProtectionData structure (Value instead of TypeValue)
-                 if (!typeValue && dataList[0]?.Value?.[0]) {
+                typeValue = dataList[0]?.TypeValue?.[0];
+                // Support DescribeWebProtectionData structure (Value instead of TypeValue)
+                if (!typeValue && dataList[0]?.Value?.[0]) {
                     typeValue = dataList[0].Value[0];
-                 }
+                }
             }
 
             const details = typeValue?.Detail || [];
@@ -939,7 +1006,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             // Context for formatting
             const range = document.getElementById('timeRange')?.value || '1h';
             const longRanges = ['7d', '31d'];
-            
+
             // 粒度始终自动，自动检测是否是日级别间隔
             let isDayInterval = false;
             if (details.length > 1) {
@@ -956,7 +1023,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             // Calculate time span of the data
             let span = 0;
             if (details.length > 0) {
-                 span = details[details.length - 1].Timestamp - details[0].Timestamp;
+                span = details[details.length - 1].Timestamp - details[0].Timestamp;
             }
 
             details.forEach(item => {
@@ -965,10 +1032,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
                 if (isDayInterval) {
                     // Show YYYY-MM-DD
-                    label = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                    label = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
                 } else if (span > 86400 || longRanges.includes(range) || (range === 'custom' && span > 86400)) {
                     // Show MM-DD HH:mm for long ranges or custom > 24h
-                    label = `${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                    label = `${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
                 } else {
                     // Show HH:mm for short ranges
                     label = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
@@ -1037,11 +1104,11 @@ body{font-family:"HarmonyOS Sans SC" !important}
             try {
                 const response = await fetch('/api/zones');
                 const result = await response.json();
-                
+
                 const select = document.getElementById('zoneId');
                 // Keep the current selection if possible, or default to *
                 const currentVal = select.value;
-                select.innerHTML = ''; 
+                select.innerHTML = '';
 
                 // Always add "All Zones" option
                 const allOption = document.createElement('option');
@@ -1057,14 +1124,14 @@ body{font-family:"HarmonyOS Sans SC" !important}
                         select.appendChild(option);
                     });
                 }
-                
+
                 // Restore selection if it exists in new options, otherwise default to *
                 if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
                     select.value = currentVal;
                 } else {
                     select.value = "*";
                 }
-                
+
                 // Load hosts for selected zone
                 await fetchHosts(select.value);
 
@@ -1073,7 +1140,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
                 const select = document.getElementById('zoneId');
                 // If error, ensure we have at least the default * option
                 if (select.options.length === 0 || select.options[0].value !== '*') {
-                     select.innerHTML = '<option value="*">获取站点失败 (默认为全部)</option>';
+                    select.innerHTML = '<option value="*">获取站点失败 (默认为全部)</option>';
                 }
             }
         }
@@ -1087,37 +1154,37 @@ body{font-family:"HarmonyOS Sans SC" !important}
         async function fetchHosts(zoneId) {
             try {
                 const select = document.getElementById('hostId');
-                
+
                 if (!zoneId || zoneId === '*') {
                     select.innerHTML = '<option value="*">全部域名</option>';
                     select.disabled = true;
                     return;
                 }
-                
+
                 select.disabled = true;
                 select.innerHTML = '<option value="*">加载中...</option>';
-                
+
                 const response = await fetch(`/api/hosts?zoneId=${encodeURIComponent(zoneId)}`);
                 const result = await response.json();
-                
+
                 const currentVal = select.value;
                 select.innerHTML = '';
-                
+
                 // Always add "All Hosts" option
                 const allOption = document.createElement('option');
                 allOption.value = "*";
                 allOption.text = "全部域名";
                 select.appendChild(allOption);
-                
+
                 // 要屏蔽的域名列表（EdgeOne Pages 默认域名等）
                 const blockedDomains = ['.edgeone.'];
-                
+
                 if (result.Hosts && result.Hosts.length > 0) {
                     // 过滤掉屏蔽的域名
                     const filteredHosts = result.Hosts.filter(host => {
                         return !blockedDomains.some(blocked => host.Host.includes(blocked));
                     });
-                    
+
                     filteredHosts.forEach(host => {
                         const option = document.createElement('option');
                         option.value = host.Host;
@@ -1129,7 +1196,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     select.innerHTML = '<option value="*">暂无子域名</option>';
                     select.disabled = true;
                 }
-                
+
                 // Restore selection if it exists
                 if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
                     select.value = currentVal;
@@ -1162,7 +1229,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
             // 初始化时间范围按钮样式（不刷新数据）
             setTimeRange('today', false);
-            
+
             // 使用 ResizeObserver 监听图表容器大小变化
             const resizeObserver = new ResizeObserver((entries) => {
                 entries.forEach(() => {
@@ -1180,7 +1247,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     chartTopRequestUrl && chartTopRequestUrl.resize();
                 });
             });
-            
+
             // 监听所有图表容器
             document.getElementById('chart_traffic') && resizeObserver.observe(document.getElementById('chart_traffic'));
             document.getElementById('chart_bandwidth') && resizeObserver.observe(document.getElementById('chart_bandwidth'));
@@ -1194,7 +1261,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             document.getElementById('chart_top_request_domain') && resizeObserver.observe(document.getElementById('chart_top_request_domain'));
             document.getElementById('chart_top_url') && resizeObserver.observe(document.getElementById('chart_top_url'));
             document.getElementById('chart_top_request_url') && resizeObserver.observe(document.getElementById('chart_top_request_url'));
-            
+
             await fetchZones(); // Fetch zones first
             await refreshData();
         }
@@ -1204,12 +1271,12 @@ body{font-family:"HarmonyOS Sans SC" !important}
             document.querySelectorAll('[id^="kpi_"]').forEach(el => el.innerText = '加载中...');
 
             const { startTime, endTime } = calculateTimeRange();
-            
+
             // Check if time range exceeds 14 days for security metrics
             const start = new Date(startTime);
             const end = new Date(endTime);
             const isOver14Days = (end - start) > (14 * 24 * 60 * 60 * 1000);
-            
+
             // Adjust time range for security metrics if over 14 days
             let securityStartTime = startTime;
             let securityEndTime = endTime;
@@ -1232,10 +1299,10 @@ body{font-family:"HarmonyOS Sans SC" !important}
             ];
 
             const results = {};
-            
+
             // Parallel fetch
             const { prevStartTime, prevEndTime } = calculatePreviousRange(startTime, endTime);
-            const { prevStartTime: securityPrevStart, prevEndTime: securityPrevEnd } = 
+            const { prevStartTime: securityPrevStart, prevEndTime: securityPrevEnd } =
                 calculatePreviousRange(securityStartTime, securityEndTime);
 
             // Group metrics by section for efficient updates
@@ -1250,25 +1317,25 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
             // Helper to determine which section a metric belongs to
             const getSection = (metric) => {
-                 for (const [section, metrics] of Object.entries(metricsConfig)) {
-                     if (metrics.includes(metric)) return section;
-                 }
-                 return null;
+                for (const [section, metrics] of Object.entries(metricsConfig)) {
+                    if (metrics.includes(metric)) return section;
+                }
+                return null;
             };
 
             // Track pending updates per section to avoid too many renders (debounce-like)
             // But since we want "show as soon as available", we can update per metric or per section group.
             // Updating per metric might be too granular for charts that share multiple metrics (like Traffic Chart has 3 lines).
             // So we will trigger section update whenever a metric in that section is ready.
-            
+
             // To prevent flickering or partial charts, we might want to wait for all metrics IN A SECTION to be ready?
             // The user said "whichever metric is fetched, show it". 
             // For KPIs, this is easy. For charts with multiple lines, adding one line at a time is fine too (ECharts supports merge).
-            
+
             // Let's iterate all metrics and fire requests in parallel
             allMetrics.forEach((metric) => {
                 const section = getSection(metric);
-                
+
                 // Use adjusted time range for security metrics if over 14 days
                 const isSecurity = metricsConfig.security.includes(metric);
                 const metricStartTime = (isSecurity && isOver14Days) ? securityStartTime : startTime;
@@ -1325,7 +1392,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             metrics.forEach(metric => {
                 const data = results[metric];
                 if (!data || data.type !== 'time') return;
-                
+
                 // Update KPI
                 document.getElementById(`kpi_${metric}`).innerText = formatBytes(data.sum);
 
@@ -1339,7 +1406,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
                 // Chart Data (Dynamic Unit)
                 const valueData = data.valueData.map(v => (v / divisor).toFixed(2));
-                
+
                 series.push({
                     name: metricLabels[metric],
                     type: 'line',
@@ -1353,19 +1420,21 @@ body{font-family:"HarmonyOS Sans SC" !important}
             });
 
             const option = {
-                tooltip: { trigger: 'axis', formatter: (params) => {
-                    let res = params[0].axisValue + '<br/>';
-                    params.forEach(param => {
-                        // Access raw data using dataIndex
-                        const seriesIndex = param.seriesIndex;
-                        const dataIndex = param.dataIndex;
-                        const rawVal = series[seriesIndex].rawData[dataIndex];
-                        const formattedVal = formatBytes(rawVal);
-                        
-                        res += `${param.marker}${param.seriesName}: ${formattedVal}<br/>`;
-                    });
-                    return res;
-                }},
+                tooltip: {
+                    trigger: 'axis', formatter: (params) => {
+                        let res = params[0].axisValue + '<br/>';
+                        params.forEach(param => {
+                            // Access raw data using dataIndex
+                            const seriesIndex = param.seriesIndex;
+                            const dataIndex = param.dataIndex;
+                            const rawVal = series[seriesIndex].rawData[dataIndex];
+                            const formattedVal = formatBytes(rawVal);
+
+                            res += `${param.marker}${param.seriesName}: ${formattedVal}<br/>`;
+                        });
+                        return res;
+                    }
+                },
                 legend: { data: metrics.map(m => metricLabels[m]), bottom: 0 },
                 grid: { left: '3%', right: '4%', bottom: '10%', top: '15%', containLabel: true },
                 xAxis: { type: 'category', boundaryGap: false, data: timeData },
@@ -1396,7 +1465,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             metrics.forEach(metric => {
                 const data = results[metric];
                 if (!data || data.type !== 'time') return;
-                
+
                 // Update KPI (Max/Peak)
                 document.getElementById(`kpi_${metric}`).innerText = formatBps(data.max);
 
@@ -1410,7 +1479,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
                 // Chart Data (Dynamic Unit)
                 const valueData = data.valueData.map(v => (v / divisor).toFixed(2));
-                
+
                 series.push({
                     name: metricLabels[metric],
                     type: 'line',
@@ -1424,17 +1493,19 @@ body{font-family:"HarmonyOS Sans SC" !important}
             });
 
             const option = {
-                tooltip: { trigger: 'axis', formatter: (params) => {
-                    let res = params[0].axisValue + '<br/>';
-                    params.forEach(param => {
-                        const seriesIndex = param.seriesIndex;
-                        const dataIndex = param.dataIndex;
-                        const rawVal = series[seriesIndex].rawData[dataIndex];
-                        const formattedVal = formatBps(rawVal);
-                        res += `${param.marker}${param.seriesName}: ${formattedVal}<br/>`;
-                    });
-                    return res;
-                }},
+                tooltip: {
+                    trigger: 'axis', formatter: (params) => {
+                        let res = params[0].axisValue + '<br/>';
+                        params.forEach(param => {
+                            const seriesIndex = param.seriesIndex;
+                            const dataIndex = param.dataIndex;
+                            const rawVal = series[seriesIndex].rawData[dataIndex];
+                            const formattedVal = formatBps(rawVal);
+                            res += `${param.marker}${param.seriesName}: ${formattedVal}<br/>`;
+                        });
+                        return res;
+                    }
+                },
                 legend: { data: metrics.map(m => metricLabels[m]), bottom: 0 },
                 grid: { left: '3%', right: '4%', bottom: '10%', top: '15%', containLabel: true },
                 xAxis: { type: 'category', boundaryGap: false, data: timeData },
@@ -1465,7 +1536,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             metrics.forEach(metric => {
                 const data = results[metric];
                 if (!data || data.type !== 'time') return;
-                
+
                 // Update KPI
                 document.getElementById(`kpi_${metric}`).innerText = formatCount(data.sum);
 
@@ -1495,21 +1566,23 @@ body{font-family:"HarmonyOS Sans SC" !important}
             });
 
             const option = {
-                tooltip: { trigger: 'axis', formatter: (params) => {
-                    let res = params[0].axisValue + '<br/>';
-                    params.forEach(param => {
-                        const seriesIndex = param.seriesIndex;
-                        const dataIndex = param.dataIndex;
-                        const rawVal = series[seriesIndex].rawData[dataIndex];
-                        const formattedVal = formatCount(rawVal);
-                        res += `${param.marker}${param.seriesName}: ${formattedVal}<br/>`;
-                    });
-                    return res;
-                }},
+                tooltip: {
+                    trigger: 'axis', formatter: (params) => {
+                        let res = params[0].axisValue + '<br/>';
+                        params.forEach(param => {
+                            const seriesIndex = param.seriesIndex;
+                            const dataIndex = param.dataIndex;
+                            const rawVal = series[seriesIndex].rawData[dataIndex];
+                            const formattedVal = formatCount(rawVal);
+                            res += `${param.marker}${param.seriesName}: ${formattedVal}<br/>`;
+                        });
+                        return res;
+                    }
+                },
                 grid: { left: '3%', right: '4%', bottom: '15%', top: '15%', containLabel: true },
-                xAxis: { 
-                    type: 'category', 
-                    boundaryGap: false, 
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
                     data: timeData,
                     axisLabel: { fontSize: 10, rotate: 45 }
                 },
@@ -1528,7 +1601,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             metrics.forEach(metric => {
                 const data = results[metric];
                 if (!data || data.type !== 'time') return;
-                
+
                 // Update KPI (Avg)
                 document.getElementById(`kpi_${metric}`).innerText = data.avg.toFixed(2) + ' ms';
 
@@ -1553,9 +1626,9 @@ body{font-family:"HarmonyOS Sans SC" !important}
                 tooltip: { trigger: 'axis', formatter: '{b}<br/>{a}: {c} ms' },
                 legend: { data: metrics.map(m => metricLabels[m]), bottom: 0 },
                 grid: { left: '3%', right: '4%', bottom: '15%', top: '15%', containLabel: true },
-                xAxis: { 
-                    type: 'category', 
-                    boundaryGap: false, 
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
                     data: timeData,
                     axisLabel: { fontSize: 10, rotate: 45 }
                 },
@@ -1568,13 +1641,13 @@ body{font-family:"HarmonyOS Sans SC" !important}
         //5.1. Security Section
         function updateSecuritySection(results) {
             const metrics = metricsConfig.security;
-            
+
             // Check time range limit
             const { startTime, endTime } = calculateTimeRange();
             const start = new Date(startTime);
             const end = new Date(endTime);
             const isOver14Days = (end - start) > (14 * 24 * 60 * 60 * 1000 + 60000);
-            
+
             // Reset error style if applicable
             const kpiEl = document.getElementById('kpi_security_hits');
             if (kpiEl) {
@@ -1597,7 +1670,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
             metrics.forEach(metric => {
                 const data = results[metric];
                 if (!data || data.type !== 'time') return;
-                
+
                 totalHits += data.sum;
 
                 if (timeData.length === 0) timeData = data.timeData;
@@ -1631,8 +1704,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
 
             const option = {
                 title: { show: false },
-                tooltip: { 
-                    trigger: 'axis', 
+                tooltip: {
+                    trigger: 'axis',
                     axisPointer: { type: 'cross', label: { backgroundColor: '#6a7985' } }
                 },
                 legend: { data: metrics.map(m => metricLabels[m]), bottom: 0 },
@@ -1651,11 +1724,11 @@ body{font-family:"HarmonyOS Sans SC" !important}
             if (!data || data.type !== 'top' || !data.data) return;
 
             const sortedData = [...data.data].sort((a, b) => b.Value - a.Value).slice(0, 10);
-            
+
             let unit = '';
             let divisor = 1;
             let label = metricLabels[metricName] || '';
-            
+
             if (metricName.includes('outFlux')) {
                 const maxVal = sortedData.length > 0 ? sortedData[0].Value : 0;
                 const best = getBestUnit(maxVal, 'bytes');
@@ -1688,37 +1761,37 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         let name = param.name;
-                         if (name.length > 100) name = name.substring(0, 100) + '...';
-                         
-                         const rawVal = sortedData[sortedData.length - 1 - param.dataIndex].Value;
-                         
-                         let formattedVal = '';
-                         if (metricName.includes('outFlux')) {
-                             formattedVal = formatBytes(rawVal);
-                         } else {
-                             const fVal = formatCount(rawVal);
-                             // Append '次' if not present in unit (formatCount returns unit, but we might want explicit '次')
-                             // formatCount returns "1.23 万". "1.23 万次" sounds good.
-                             // "500" -> "500 次".
-                             formattedVal = fVal + (fVal.includes('千') || fVal.includes('万') || fVal.includes('亿') ? '次' : ' 次');
-                         }
-                         
-                         return `${name}<br/>${param.marker}${label}: ${formattedVal}`;
+                        const param = params[0];
+                        let name = param.name;
+                        if (name.length > 100) name = name.substring(0, 100) + '...';
+
+                        const rawVal = sortedData[sortedData.length - 1 - param.dataIndex].Value;
+
+                        let formattedVal = '';
+                        if (metricName.includes('outFlux')) {
+                            formattedVal = formatBytes(rawVal);
+                        } else {
+                            const fVal = formatCount(rawVal);
+                            // Append '次' if not present in unit (formatCount returns unit, but we might want explicit '次')
+                            // formatCount returns "1.23 万". "1.23 万次" sounds good.
+                            // "500" -> "500 次".
+                            formattedVal = fVal + (fVal.includes('千') || fVal.includes('万') || fVal.includes('亿') ? '次' : ' 次');
+                        }
+
+                        return `${name}<br/>${param.marker}${label}: ${formattedVal}`;
                     }
                 },
                 grid: { left: '3%', right: '25%', bottom: '8%', top: '8%', containLabel: true },
-                xAxis: { 
-                    type: 'value', 
+                xAxis: {
+                    type: 'value',
                     name: unit,
                     nameLocation: 'end',
                     nameTextStyle: { fontSize: 10 },
                     axisLabel: { fontSize: 9 },
                     splitLine: { show: true, lineStyle: { type: 'dashed' } }
                 },
-                yAxis: { 
-                    type: 'category', 
+                yAxis: {
+                    type: 'category',
                     data: yAxisData,
                     axisLabel: {
                         fontSize: 9,
@@ -1734,8 +1807,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                         data: seriesData,
                         barMaxWidth: 16,
                         itemStyle: { color: color, borderRadius: [0, 3, 3, 0] },
-                        label: { 
-                            show: true, 
+                        label: {
+                            show: true,
                             position: 'right',
                             fontSize: 9,
                             distance: 5
@@ -1877,8 +1950,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -1915,8 +1988,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -1953,8 +2026,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -1991,8 +2064,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2029,15 +2102,15 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         // Truncate long URLs in tooltip if needed, but usually full URL is better
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        // Truncate long URLs in tooltip if needed, but usually full URL is better
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
                 xAxis: { type: 'value', name: 'GB' },
-                yAxis: { 
-                    type: 'category', 
+                yAxis: {
+                    type: 'category',
                     data: yAxisData,
                     axisLabel: {
                         formatter: function (value) {
@@ -2080,8 +2153,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2118,8 +2191,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2155,7 +2228,7 @@ body{font-family:"HarmonyOS Sans SC" !important}
                 if (!key || key === '-') return '字段不存在'; //无/直接访问
                 return key;
             }).reverse();
-            
+
             const seriesData = sortedData.map(item => (item.Value / (1024 * 1024 * 1024)).toFixed(2)).reverse(); // GB
 
             const option = {
@@ -2163,14 +2236,14 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
                 xAxis: { type: 'value', name: 'GB' },
-                yAxis: { 
-                    type: 'category', 
+                yAxis: {
+                    type: 'category',
                     data: yAxisData,
                     axisLabel: {
                         formatter: function (value) {
@@ -2213,8 +2286,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2251,8 +2324,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2289,8 +2362,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2327,11 +2400,11 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         // Find full UA string
-                         const originalItem = sortedData.find((item, index) => index === (sortedData.length - 1 - param.dataIndex));
-                         const fullName = originalItem ? originalItem.Key : param.name;
-                         return `${fullName}<br/>${param.marker}流量: ${param.value} GB`;
+                        const param = params[0];
+                        // Find full UA string
+                        const originalItem = sortedData.find((item, index) => index === (sortedData.length - 1 - param.dataIndex));
+                        const fullName = originalItem ? originalItem.Key : param.name;
+                        return `${fullName}<br/>${param.marker}流量: ${param.value} GB`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2368,8 +2441,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2406,8 +2479,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2444,8 +2517,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2482,8 +2555,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2520,8 +2593,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2558,8 +2631,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2596,8 +2669,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2628,11 +2701,11 @@ body{font-family:"HarmonyOS Sans SC" !important}
             const sortedData = [...data.data].sort((a, b) => b.Value - a.Value).slice(0, 10); // Top 10
 
             const yAxisData = sortedData.map(item => {
-                 let key = item.Key;
-                 if (key === '-') return '字段不存在'; //直接访问
-                 // Clean up backticks and extra spaces
-                 key = key.replace(/`/g, '').trim();
-                 return key.substring(0, 50) + (key.length > 50 ? '...' : '');
+                let key = item.Key;
+                if (key === '-') return '字段不存在'; //直接访问
+                // Clean up backticks and extra spaces
+                key = key.replace(/`/g, '').trim();
+                return key.substring(0, 50) + (key.length > 50 ? '...' : '');
             }).reverse();
             const seriesData = sortedData.map(item => item.Value).reverse();
 
@@ -2641,16 +2714,16 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         // Find full referer string
-                         const originalItem = sortedData.find((item, index) => index === (sortedData.length - 1 - param.dataIndex));
-                         let fullName = param.name;
-                         if (originalItem) {
-                             let key = originalItem.Key;
-                             if (key === '-') fullName = '字段不存在'; //直接访问
-                             else fullName = key.replace(/`/g, '').trim();
-                         }
-                         return `${fullName}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        // Find full referer string
+                        const originalItem = sortedData.find((item, index) => index === (sortedData.length - 1 - param.dataIndex));
+                        let fullName = param.name;
+                        if (originalItem) {
+                            let key = originalItem.Key;
+                            if (key === '-') fullName = '字段不存在'; //直接访问
+                            else fullName = key.replace(/`/g, '').trim();
+                        }
+                        return `${fullName}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2687,8 +2760,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2725,8 +2798,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2763,8 +2836,8 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        return `${param.name}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2801,11 +2874,11 @@ body{font-family:"HarmonyOS Sans SC" !important}
                     trigger: 'axis',
                     axisPointer: { type: 'shadow' },
                     formatter: (params) => {
-                         const param = params[0];
-                         // Find full UA string
-                         const originalItem = sortedData.find((item, index) => index === (sortedData.length - 1 - param.dataIndex));
-                         const fullName = originalItem ? originalItem.Key : param.name;
-                         return `${fullName}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
+                        const param = params[0];
+                        // Find full UA string
+                        const originalItem = sortedData.find((item, index) => index === (sortedData.length - 1 - param.dataIndex));
+                        const fullName = originalItem ? originalItem.Key : param.name;
+                        return `${fullName}<br/>${param.marker}请求数: ${param.value.toLocaleString()} 次`;
                     }
                 },
                 grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -2866,4 +2939,5 @@ body{font-family:"HarmonyOS Sans SC" !important}
         initDashboard();
     </script>
 </body>
+
 </html>
